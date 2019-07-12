@@ -6,24 +6,28 @@ export default class FAB extends TouchableWithoutFeedback{
     constructor(props) {
         super(props);
         this.state = {
-          scale : new Animated.Value(1),
-          pan: new Animated.ValueXY()
+          scale: new Animated.Value(1),
+        // height: new Animated.Value(60),
+        // width: new Animated.Value(60),
+        // border: new Animated.Value(30),
+          pan: new Animated.ValueXY(),
         }
     }
     componentWillMount() {
         this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
             onMoveShouldSetResponderCapture: () => true,
             onMoveShouldSetPanResponderCapture: () => true,
  
             onPanResponderGrant: (evt, gestureState) => {
                 Animated.spring(
-                this.state.scale,
-                {
-                    toValue: 1.3,
-                    bounciness: 15,
-                    speed: 40,
-                    useNativeDriver: true
-                }
+                    this.state.scale,
+                    {
+                        toValue: 1.3,
+                        bounciness: 15,
+                        speed: 40,
+                        useNativeDriver: true
+                    }
                 ).start()
             },
             onPanResponderMove: Animated.event([null, {
@@ -31,39 +35,90 @@ export default class FAB extends TouchableWithoutFeedback{
                 dy: this.state.pan.y
             }]),
             onPanResponderRelease: (e, gesture) => {
-                Animated.parallel([
-                    Animated.spring(
-                        this.state.pan,
-                        {
-                        toValue:{x:0,y:0},
-                        bounciness: 8,
-                        speed: 20,
-                        useNativeDriver: true
-                        }
-                    ).start(),
-                    Animated.spring(
-                        this.state.scale,
-                        {
-                        toValue: 1,
-                        bounciness: 15,
-                        speed: 40,
-                        useNativeDriver: true
-                        }
-                    ).start()
-                ])
+                // if(this.isDropArea(gesture)){
+                //     Animated.parallel([
+                //         Animated.spring(
+                //             this.state.scale,
+                //             {
+                //                 toValue: 1,
+                //                 bounciness: 15,
+                //                 speed: 40,
+                //                 // useNativeDriver: true
+                //             }
+                //         ).start(),
+                //         Animated.spring(
+                //             this.state.border,
+                //             {
+                //                 toValue: 2,
+                //                 bounciness: 15,
+                //                 speed: 40,
+                //                 // useNativeDriver: true
+                //             }
+                //         ).start(),
+                //         Animated.spring(
+                //             this.state.height,
+                //             {
+                //                 toValue: 20,
+                //                 bounciness: 15,
+                //                 speed: 40,
+                //                 // useNativeDriver: true
+                //             }
+                //         ).start(),
+                //         Animated.spring(
+                //             this.state.width,
+                //             {
+                //                 toValue: 60,
+                //                 bounciness: 15,
+                //                 speed: 40,
+                //                 // useNativeDriver: true
+                //             }
+                //         ).start(),
+                //     ])
+                // }
+                // else {
+                    Animated.parallel([
+                        Animated.spring(
+                            this.state.pan,
+                            {
+                                toValue:{x:0,y:0},
+                                bounciness: 8,
+                                speed: 20,
+                                useNativeDriver: true
+                            }
+                        ).start(),
+                        Animated.spring(
+                            this.state.scale,
+                            {
+                                toValue: 1,
+                                bounciness: 15,
+                                speed: 40,
+                                useNativeDriver: true
+                            }
+                        ).start(),
+                    ])
+                // }
+                
             }
         })
     }
-
+    isDropArea(gesture) {
+        return gesture.moveY < 400;
+    }
+ 
     render(){
       let { pan, scale } = this.state;
       let [translateX, translateY] = [pan.x, pan.y];
       let rotate = '0deg';
       let imageStyle = {
+        
         width: 60,
         height: 60,
         borderRadius: 30,
+        elevation: 6,
+        // borderRadius: this.state.border ,
         transform: [{translateX}, {translateY}, {rotate}, {scale}],
+        // width: this.state.width,
+        // height: this.state.height,
         backgroundColor: '#667788',
         justifyContent: 'center',
       };
@@ -90,6 +145,6 @@ const styles = StyleSheet.create({
     right: 20,
     bottom: 20,
     height: 60,
-    width: 60  
+    width: 60
   }
 });

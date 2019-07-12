@@ -116,23 +116,19 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		width: 40,
 		height: 20,
-		top: 35 ,
+		top: 30 ,
 		left: 0
 	},
   scrollView: {
-		flex:1,
-		backgroundColor: '#ffffff'
+    flex:1,
     // backgroundColor: Colors.lighter, 
   },
   body: {
     // backgroundColor: Colors.white,
   },
   sectionContainer: {
-    paddingTop: 20,
-		paddingHorizontal: 24,
-		paddingBottom: 20,
-		backgroundColor: '#eecc99',
-		elevation: 4
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
   sectionTitle: {
     fontSize: 24,
