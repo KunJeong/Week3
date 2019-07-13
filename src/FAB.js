@@ -10,7 +10,8 @@ export default class FAB extends TouchableWithoutFeedback{
         // height: new Animated.Value(60),
         // width: new Animated.Value(60),
         // border: new Animated.Value(30),
-          pan: new Animated.ValueXY(),
+					pan: new Animated.ValueXY(),
+					index:0
         }
     }
     componentWillMount() {
@@ -30,10 +31,17 @@ export default class FAB extends TouchableWithoutFeedback{
                     }
                 ).start()
             },
-            onPanResponderMove: Animated.event([null, {
+            onPanResponderMove:
+							Animated.event([
+								null,
+								{
                 dx: this.state.pan.x,
-                dy: this.state.pan.y
-            }]),
+								dy: this.state.pan.y
+								}
+							],
+							{listener: (evt, gestureState) => this.findCellIndex(gestureState.moveX, gestureState.moveY)}
+							)
+						,
             onPanResponderRelease: (e, gesture) => {
                 // if(this.isDropArea(gesture)){
                 //     Animated.parallel([
@@ -101,9 +109,20 @@ export default class FAB extends TouchableWithoutFeedback{
             }
         })
     }
-    isDropArea(gesture) {
-        return gesture.moveY < 400;
-    }
+    findCellIndex = (locationX, locationY) => {
+			const width = 47.2;
+			const leftOffset = 15;
+			const height = 80;
+			const topOffset = 99;
+	
+			const cellToRight = Math.floor((locationX-leftOffset) / width);
+			const cellToBottom = Math.floor((locationY-topOffset) / height);
+	
+			const currentcellIndex =
+				cellToRight + 7 * cellToBottom;
+			// return currentcellIndex;
+			this.setState({index: currentcellIndex});
+		};
  
     render(){
       let { pan, scale } = this.state;
@@ -125,6 +144,7 @@ export default class FAB extends TouchableWithoutFeedback{
       
         return(    
             <View style={styles.absolute}>
+							<Text>{this.state.index}</Text>
                 <Animated.View
                 {...this.panResponder.panHandlers} 
                 style={imageStyle}>

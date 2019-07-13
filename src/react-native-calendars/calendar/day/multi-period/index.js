@@ -51,15 +51,15 @@ class Day extends Component {
         ];
         if (period.startingDay) {
           style.push({
-            borderTopLeftRadius: 7,
-            borderBottomLeftRadius: 7,
+            borderTopLeftRadius: 2,
+            borderBottomLeftRadius: 2,
             marginLeft: 2,
           });
         }
         if (period.endingDay) {
           style.push({
-            borderTopRightRadius: 7,
-            borderBottomRightRadius: 7,
+            borderTopRightRadius: 2,
+            borderBottomRightRadius: 2,
             marginRight: 2,
           });
         }

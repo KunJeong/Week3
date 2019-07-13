@@ -1,4 +1,5 @@
 import {Calendar, CalendarList, Agenda} from './src/react-native-calendars';
+import FAB from './src/FAB'
 import React, { Component } from 'react';
 // import {LocaleConfig} from 'react-native-calendars';
 import {
@@ -140,6 +141,7 @@ export default class App extends Component {
 		// const currentYear = 
 		// const { selectedDate } = this.state
 			return (
+				<View style={styles.box}>
 			<View style={styles.container}>
 				<CalendarList style={styles.calendar}
    					onDayPress={(day) => this.selectedDay(day)}
@@ -150,14 +152,14 @@ export default class App extends Component {
 					  	'2019-07-10': {
 					      periods: [
 					        { startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
-					        // { startingDay: false, endingDay: true, color: '#ffa500' },
+					        { startingDay: true, endingDay: true, color: '#eeeeee' },
 					        // { startingDay: true, endingDay: false, color: '#f0e68c' },
 					      ]
 					    },
 					    '2019-07-11': {
 					      periods: [
 					        { startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
-					        // { startingDay: false, endingDay: true, color: '#ffa500' },
+					        { startingDay: true, endingDay: true, color: '#ffa500' },
 					        // { startingDay: true, endingDay: false, color: '#f0e68c' },
 					      ]
 					    },
@@ -182,12 +184,20 @@ export default class App extends Component {
 		        	onChangeText={(text) => this.setState({multi_period_Text: text})}
 		        />*/}
 		        <Text>{this.state.month}</Text>
+				
+			</View>
+			<FAB/>
 			</View>
 			);
 	}
 }
 
 const styles = StyleSheet.create({
+	box: {
+		height: '100%',
+		// paddingLeft: 5,
+		// paddingRight: 5,
+	  },
 	red: {
 		color: 'red',
 	},
