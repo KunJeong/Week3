@@ -11,7 +11,12 @@ export default class FAB extends TouchableWithoutFeedback{
         // width: new Animated.Value(60),
         // border: new Animated.Value(30),
 					pan: new Animated.ValueXY(),
-					index:0
+					width : 47.2,
+			leftOffset : 15,
+			height : 80,
+      topOffset : 99,
+      cellToRight: 0,
+      cellToBottom: 0
         }
     }
     componentWillMount() {
@@ -110,19 +115,25 @@ export default class FAB extends TouchableWithoutFeedback{
         })
     }
     findCellIndex = (locationX, locationY) => {
-			const width = 47.2;
-			const leftOffset = 15;
-			const height = 80;
-			const topOffset = 99;
 	
-			const cellToRight = Math.floor((locationX-leftOffset) / width);
-			const cellToBottom = Math.floor((locationY-topOffset) / height);
+			const cellToRight = Math.floor((locationX-this.state.leftOffset) / this.state.width);
+			const cellToBottom = Math.floor((locationY-this.state.topOffset) / this.state.height);
 	
-			const currentcellIndex =
-				cellToRight + 7 * cellToBottom;
-			// return currentcellIndex;
-			this.setState({index: currentcellIndex});
-		};
+			// const currentcellIndex =
+			// 	cellToRight + 7 * cellToBottom;
+      // return currentcellIndex;
+      this.setState({cellToRight: cellToRight, cellToBottom: cellToBottom});
+    };
+
+    // renderStrip = (cellToRight, cellToBottom) => {
+    //   const width = 47.2;
+		// 	const leftOffset = 15;
+		// 	const height = 80;
+		// 	const topOffset = 99;
+    //   return(
+        
+    //   )
+    // }
  
     render(){
       let { pan, scale } = this.state;
@@ -142,9 +153,9 @@ export default class FAB extends TouchableWithoutFeedback{
         justifyContent: 'center',
       };
       
-        return(    
+        return(
+             
             <View style={styles.absolute}>
-							<Text>{this.state.index}</Text>
                 <Animated.View
                 {...this.panResponder.panHandlers} 
                 style={imageStyle}>

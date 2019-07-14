@@ -140,55 +140,55 @@ export default class App extends Component {
 		// const currentMonth = 
 		// const currentYear = 
 		// const { selectedDate } = this.state
-			return (
-				<View style={styles.box}>
-			<View style={styles.container}>
-				<CalendarList style={styles.calendar}
-   					onDayPress={(day) => this.selectedDay(day)}
-					horizontal={true}
-					pagingEnabled={true}
-					calendarHeight={500}
-					markedDates={{
-					  	'2019-07-10': {
-					      periods: [
-					        { startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
-					        { startingDay: true, endingDay: true, color: '#eeeeee' },
-					        // { startingDay: true, endingDay: false, color: '#f0e68c' },
-					      ]
-					    },
-					    '2019-07-11': {
-					      periods: [
-					        { startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
-					        { startingDay: true, endingDay: true, color: '#ffa500' },
-					        // { startingDay: true, endingDay: false, color: '#f0e68c' },
-					      ]
-					    },
-					    '2019-07-12': {
-					      periods: [
-					        { startingDay: false, endingDay: false, color: '#5f9ea0', text: "석!" },
-					        // { color: 'transparent' },
-					        // { startingDay: false, endingDay: false, color: '#f0e68c' },
-					      ]
-					    },
-					    '2019-07-13': {
-					      periods: [
-					        { startingDay: false, endingDay: true, color: '#5f9ea0', text: "훈!" },
-					        // { color: 'transparent' },
-					        // { startingDay: false, endingDay: false, color: '#f0e68c' },
-					      ]
-					    },
-					  }}
-					markingType={'multi-period'}
-				/>
-				{/*<TextInput style={{height: 40,borderColor: 'gray', borderWidth: 1}}
-		        	onChangeText={(text) => this.setState({multi_period_Text: text})}
-		        />*/}
-		        <Text>{this.state.month}</Text>
-				
+		return (
+			<View style={styles.box}>
+				{/* <View style={styles.container}>
+					{/* <CalendarList style={styles.calendar}
+						onDayPress={(day) => this.selectedDay(day)}
+						horizontal={true}
+						pagingEnabled={true}
+						calendarHeight={500}
+						markedDates={{
+							'2019-07-10': {
+							periods: [
+								{ startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
+								{ startingDay: true, endingDay: true, color: '#eeeeee' },
+								// { startingDay: true, endingDay: false, color: '#f0e68c' },
+							]
+							},
+							'2019-07-11': {
+							periods: [
+								{ startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
+								{ startingDay: true, endingDay: true, color: '#ffa500' },
+								// { startingDay: true, endingDay: false, color: '#f0e68c' },
+							]
+							},
+							'2019-07-12': {
+							periods: [
+								{ startingDay: false, endingDay: false, color: '#5f9ea0', text: "석!" },
+								// { color: 'transparent' },
+								// { startingDay: false, endingDay: false, color: '#f0e68c' },
+							]
+							},
+							'2019-07-13': {
+							periods: [
+								{ startingDay: false, endingDay: true, color: '#5f9ea0', text: "훈!" },
+								// { color: 'transparent' },
+								// { startingDay: false, endingDay: false, color: '#f0e68c' },
+							]
+							},
+						}}
+						markingType={'multi-period'}
+					/>
+					{/*<TextInput style={{height: 40,borderColor: 'gray', borderWidth: 1}}
+						onChangeText={(text) => this.setState({multi_period_Text: text})}
+					/>*
+					<Text>{this.state.month}</Text>
+					
+				</View> */}
+				<FAB/>
 			</View>
-			<FAB/>
-			</View>
-			);
+		);
 	}
 }
 
