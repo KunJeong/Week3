@@ -1,211 +1,216 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, {Fragment, Component} from 'react';
+import {Calendar, CalendarList, Agenda} from './src/react-native-calendars';
+import FAB from './src/FAB'
+import React, { Component } from 'react';
+// import {LocaleConfig} from 'react-native-calendars';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-	FlatList,
-	TouchableOpacity
+	AppRegistry,
+	StyleSheet,
+	Text,
+	View,
+	TextInput,
+	Button,
+	TouchableOpacity,
+	Alert
 } from 'react-native';
+// import { Button } from 'react-native-elements';
 
-import {Badge} from 'react-native-elements';
 
-import FAB from './src/FAB';
+// LocaleConfig.locales['fr'] = {
+//   monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+//   monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+//   dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+//   dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+//   today: 'Aujourd\'hui'
+// };
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// LocaleConfig.defaultLocale = 'fr';
 
-class MyListItem extends React.PureComponent {
-  // _onPress = () => {
-  //   this.props.onPressItem(this.props.id);
-  // };
+// class dotdate extends Component {
+//   render() {
+//     return (
+//       <View style={{alignItems: 'center'}}>
+//         <Text>Hello {this.props.name}!</Text>
+//       </View>
+//     );
+//   }
+// }
 
+class CustomText extends Component {
   render() {
-    const textColor = this.props.selected ? 'red' : 'black';
     return (
-      // <TouchableOpacity onPress={this._onPress}>
-        <View style={styles.item}>
-          <Text style={styles.time}>{this.props.title}</Text>
-        </View>
-      // </TouchableOpacity>
-    );
-  }
-}
-class MyListItemTwo extends React.PureComponent {
-  // _onPress = () => {
-  //   this.props.onPressItem(this.props.id);
-  // };
-
-  render() {
-    const textColor = this.props.selected ? 'red' : 'black';
-    return (
-      // <TouchableOpacity onPress={this._onPress}>
-        <View style={styles.itemTwo}>
-          <Text style={styles.textTwo}>{this.props.title}</Text>
-        </View>
-      // </TouchableOpacity>
+      <Text style={{backgroundColor: "blue"}}>{this.props.text}</Text>
     );
   }
 }
 
-class App extends Component{
-  _keyExtractor = (item, index) => item.id;
+// class CustomDay extends Day {
+// 	constructor(props){
+// 		super(props);
+// 	};
+// 	dayComponent={({date, state}) => {
+//    		return (
+//    			<TouchableOpacity style={styles.button}
+// 				onPress={this.onPress}
+// 			>
+// 	   		<View style={styles.day}>
+// 				<Text>{date.day}</Text>
+// 				<Text>{this.state.markedText}</Text>
+// 			</View>
+// 		   	</TouchableOpacity>);
+//    	}}
+// }
 
-  _renderItem = ({item}) => (
-    <MyListItem
-      id={item.id}
-      title={item.title}
-    />
-	);
-	_renderItemTwo = ({item}) => (
-    <MyListItemTwo
-      id={item.id}
-      title={item.title}
-    />
-	);
-  render(){
-    return (
-			<View style={styles.scrollView}>
-				<View style={styles.sectionContainer}>
-						<Text style={styles.sectionTitle}>Today</Text>
-				</View>
-				<View style={{flexDirection: "row"}}>
-					<FlatList
-						style={{flex: 1}}
-						data={
-							[
-								{id: 'a', title: 'AM 1'}, 
-								{id: 'b', title: '2'}, 
-								{id: 'c', title: '3'}, 
-								{id: 'd', title: '4'},
-								{id: 'e', title: '5'},
-								{id: 'f', title: '6'},
-								{id: 'g', title: '7'},
-								{id: 'h', title: '8'},
-								{id: 'i', title: '9'},
-								{id: 'j', title: '10'},
-								{id: 'k', title: '11'},
-								{id: 'l', title: '12'},
-								{id: 'm', title: 'PM 1'},
-								{id: 'n', title: '2'},
-								{id: 'o', title: '3'},
-								{id: 'p', title: '4'},
-								{id: 'q', title: '5'},
-								{id: 'r', title: '6'},
-								{id: 's', title: '7'},
-								{id: 't', title: '8'},
-								{id: 'u', title: '9'},
-								{id: 'v', title: '10'},
-								{id: 'w', title: '11'},
-								{id: 'x', title: '12'},
-								{id: 'y', title: ''},
-							]}
-						keyExtractor={this._keyExtractor}
-						renderItem={this._renderItem}
-						showsVerticalScrollIndicator={false}
-					/>
-					<FlatList
-						style={{flex: 1}}
-						data={
-							[
-								{id: 'a', title: 'Wake up'},
-								{id: 'b', title: 'School'},
-								{id: 'c', title: 'Coding'},
-								{id: 'd', title: 'Basketball'},
-							]}
-						keyExtractor={this._keyExtractor}
-						renderItem={this._renderItemTwo}
-						showsVerticalScrollIndicator={false}
-					/>
-				</View>
-				<FAB/>
-			</View>
-    );
+// class Date extends Component {
+// 	constructor (props) {
+// 	 	super(props)
+// 	 	this.state = {
+// 		selectedDate: 'HI'
+// 	 	}
+// 	 	this.updateDate = this.updateDate.bind(this)
+// 	}
+
+// 	updateDate (input) {
+//   		this.setState({selectedDate: input})
+// 	}
+
+// 	render() {
+// 		return (
+// 	      <View style={styles.container}>
+
+// 	        <Button
+//           		color="green"
+//           		title={this.state.selectedDate}
+//           		onPress={(e) => this.updateDate("BYE!!")}
+//           	/>
+//           	<Text>{this.state.selectedDate}</Text>
+// 	      </View>
+// 		);
+// 	}
+// }
+
+// const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
+// const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
+// const workout = {key:'workout', color: 'green'};
+
+export default class App extends Component {
+	constructor (props) {
+	 	super(props)
+	 	this.state = {
+	 		multi_period_Text: "HI!",
+	 		// markedColor: "",
+	 		// markedDates:13,
+			D: 0,
+			month:"",
+	 	}
+	 	this.updateDate = this.updateDate.bind(this)
 	}
-};
+
+	onPress = () => {
+    	this.setState({
+    		D: this.state.D + 1
+   		})
+	}
+
+	updateDate (input) {
+  		this.setState({D: input})
+	}
+
+	// daay(props) {
+	// 	if(props.day === this.state.markedDates){
+	// 		return (<CustomText text= {this.state.markedText !== 0 ? this.state.markedText: null}/>)
+	// 	}
+	// }
+
+	// static getDerivedStateFromProps(nextProps, prevState) {
+ //    if (prevState.markedText !== nextProps.markedText) {
+ //      return {markedText: nextProps.markedText}
+ //    }
+
+ //    return null;
+ //  }
+
+
+ 	selectedDay(props) {
+ 		Alert.alert(JSON.stringify(props))
+ 		// <Text style={{marginTop: 300}}> { this.state.markedText !== "" ? this.state.markedText: "BYE!"}</Text>
+	}
+	onIndexChange(){
+		return(
+			<View style = {styles.absolute}>
+			</View>
+		)
+	}
+
+	render() {
+		// const currentMonth = 
+		// const currentYear = 
+		// const { selectedDate } = this.state
+		return (
+			<View style={styles.box}>
+				<View style={styles.container}>
+					<CalendarList style={styles.calendar}
+						onDayPress={(day) => this.selectedDay(day)}
+						horizontal={true}
+						pagingEnabled={true}
+						calendarHeight={500}
+						markedDates={{
+							'2019-07-10': {
+							periods: [
+								{ startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
+								{ startingDay: true, endingDay: true, color: '#eeeeee' },
+								// { startingDay: true, endingDay: false, color: '#f0e68c' },
+							]
+							},
+							'2019-07-11': {
+							periods: [
+								{ startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
+								{ startingDay: true, endingDay: true, color: '#ffa500' },
+								// { startingDay: true, endingDay: false, color: '#f0e68c' },
+							]
+							},
+							'2019-07-12': {
+							periods: [
+								{ startingDay: false, endingDay: false, color: '#5f9ea0', text: "석!" },
+								// { color: 'transparent' },
+								// { startingDay: false, endingDay: false, color: '#f0e68c' },
+							]
+							},
+							'2019-07-13': {
+							periods: [
+								{ startingDay: false, endingDay: true, color: '#5f9ea0', text: "훈!" },
+								// { color: 'transparent' },
+								// { startingDay: false, endingDay: false, color: '#f0e68c' },
+							]
+							},
+						}}
+						markingType={'multi-period'}
+					/>
+					<Text>{this.state.month}</Text>
+					
+				</View>
+				{this.onIndexChange()}
+				<FAB 
+				/>
+			</View>
+		);
+	}
+}
 
 const styles = StyleSheet.create({
-	item: {
-		// marginTop: 2,
-		// marginBottom: 2,
-		// paddingBottom:2,
-		marginLeft: 20,
-		height: 45,
-		width: 150,
-		borderBottomWidth: 1, 
-		// borderRadius: 4,
-		// backgroundColor: '#dddddd'  
-		// backgroundColor: '#eeeeee',
-		// borderTopColor: '#000000'
+	box: {
+		height: '100%',
+		// paddingLeft: 5,
+		// paddingRight: 5,
+	  },
+	red: {
+		color: 'red',
 	},
-	time:{ 
-		textAlign:'right',
-		paddingRight: 5,
-		backgroundColor : '#ffffff',
+	absolute: {
 		position: 'absolute',
-		width: 40,
-		height: 20,
-		top: 35 ,
-		left: 0
-	},
-	textTwo:{
-		textAlign: 'center',
-		textAlignVertical: 'center',
-	},
-  scrollView: {
-		flex:1,
-		backgroundColor: '#ffffff'
-    // backgroundColor: Colors.lighter, 
-	},
-	itemTwo:{ 
-		justifyContent: 'center', 
-		// alignItems: 'center' ,
-		marginTop: 10,
-		marginLeft:20,
-		height: 45,
-		width:150,
-		borderRadius: 4,
-		backgroundColor: '#eeccaa'
-	},
-  body: {
-    // backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    paddingTop: 20,
-		paddingHorizontal: 24,
-		paddingBottom: 20,
-		backgroundColor: '#eecc99',
-		elevation: 4
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+		left:15,
+		top:100,
+		width: 47.2,
+		height: 80, 
+		backgroundColor: '#eeeeee'
+	}
 });
-
-export default App;

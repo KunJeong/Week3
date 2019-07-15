@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import {
   Text,
@@ -70,6 +71,7 @@ export default class AgendaScreen extends Component {
       <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
     );
   }
+
 
   renderEmptyDate() {
     return (

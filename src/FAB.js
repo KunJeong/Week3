@@ -10,7 +10,13 @@ export default class FAB extends TouchableWithoutFeedback{
         // height: new Animated.Value(60),
         // width: new Animated.Value(60),
         // border: new Animated.Value(30),
-          pan: new Animated.ValueXY(),
+					pan: new Animated.ValueXY(),
+					width : 47.2,
+					leftOffset : 15,
+					height : 80,
+					topOffset : 99,
+					cellToRight: 0,
+					cellToBottom: 0
         }
     }
     componentWillMount() {
@@ -30,10 +36,17 @@ export default class FAB extends TouchableWithoutFeedback{
                     }
                 ).start()
             },
-            onPanResponderMove: Animated.event([null, {
+            onPanResponderMove:
+							Animated.event([
+								null,
+								{
                 dx: this.state.pan.x,
-                dy: this.state.pan.y
-            }]),
+								dy: this.state.pan.y
+								}
+							],
+							{listener: (evt, gestureState) => this.findCellIndex(gestureState.moveX, gestureState.moveY)}
+							)
+						,
             onPanResponderRelease: (e, gesture) => {
                 // if(this.isDropArea(gesture)){
                 //     Animated.parallel([
@@ -101,9 +114,26 @@ export default class FAB extends TouchableWithoutFeedback{
             }
         })
     }
-    isDropArea(gesture) {
-        return gesture.moveY < 400;
-    }
+    findCellIndex = (locationX, locationY) => {
+	
+			const cellToRight = Math.floor((locationX-this.state.leftOffset) / this.state.width);
+			const cellToBottom = Math.floor((locationY-this.state.topOffset) / this.state.height);
+	
+			// const currentcellIndex =
+			// 	cellToRight + 7 * cellToBottom;
+      // return currentcellIndex;
+      this.setState({cellToRight: cellToRight, cellToBottom: cellToBottom});
+    };
+
+    // renderStrip = (cellToRight, cellToBottom) => {
+    //   const width = 47.2;
+		// 	const leftOffset = 15;
+		// 	const height = 80;
+		// 	const topOffset = 99;
+    //   return(
+        
+    //   )
+    // }
  
     render(){
       let { pan, scale } = this.state;
@@ -123,7 +153,8 @@ export default class FAB extends TouchableWithoutFeedback{
         justifyContent: 'center',
       };
       
-        return(    
+        return(
+             
             <View style={styles.absolute}>
                 <Animated.View
                 {...this.panResponder.panHandlers} 
