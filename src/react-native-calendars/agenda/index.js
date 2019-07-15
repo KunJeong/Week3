@@ -242,7 +242,7 @@ export default class AgendaView extends Component {
     // in CalendarList listView, but that might impact performance when scrolling
     // month list in expanded CalendarList.
     // Further info https://github.com/facebook/react-native/issues/1831
-    this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
+    this.calendar.scrollToDay(this.state.selectedDay, 0, true);
   }
 
   _chooseDayFromCalendar(d) {
@@ -268,7 +268,7 @@ export default class AgendaView extends Component {
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-    this.calendar.scrollToDay(day, this.calendarOffset(), true);
+    this.calendar.scrollToDay(day, 0, true);
     
     if (this.props.loadItemsForMonth) {
       this.props.loadItemsForMonth(xdateToData(day));
@@ -305,7 +305,7 @@ export default class AgendaView extends Component {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
     
-    this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
+    this.calendar.scrollToDay(day, 0, withAnimation);
     this.setState({
       selectedDay: parseDate(day)
     });
@@ -402,30 +402,44 @@ export default class AgendaView extends Component {
         <Animated.View style={headerStyle}>
           <Animated.View style={{flex:1, transform: [{translateY: contentTranslate}]}}>
             <CalendarList
-              onLayout={() => {
-                this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
-              }}
-              calendarWidth={this.viewWidth}
-              theme={this.props.theme}
-              onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
+              month={this.state.currentMonth}
               ref={(c) => this.calendar = c}
-              minDate={this.props.minDate}
-              maxDate={this.props.maxDate}
-              current={this.currentMonth}
-              markedDates={this.generateMarkings()}
-              markingType={this.props.markingType}
-              removeClippedSubviews={this.props.removeClippedSubviews}
               onDayPress={this._chooseDayFromCalendar.bind(this)}
-              scrollingEnabled={this.state.calendarScrollable}
-              hideExtraDays={this.state.calendarScrollable}
-              firstDay={this.props.firstDay}
-              monthFormat={this.props.monthFormat}
-              pastScrollRange={this.props.pastScrollRange}
-              futureScrollRange={this.props.futureScrollRange}
-              dayComponent={this.props.dayComponent}
               disabledByDefault={this.props.disabledByDefault}
-              displayLoadingIndicator={this.props.displayLoadingIndicator}
-              showWeekNumbers={this.props.showWeekNumbers}
+              horizontal={true}
+              pagingEnabled={true}
+              calendarHeight={650}
+              markedDates={{
+              '2019-07-10': {
+                periods: [
+                  { startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
+                  // { startingDay: false, endingDay: true, color: '#ffa500' },
+                  // { startingDay: true, endingDay: false, color: '#f0e68c' },
+                ]
+              },
+              '2019-07-11': {
+                periods: [
+                  { startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
+                  // { startingDay: false, endingDay: true, color: '#ffa500' },
+                  // { startingDay: true, endingDay: false, color: '#f0e68c' },
+                ]
+              },
+              '2019-07-12': {
+                periods: [
+                  { startingDay: false, endingDay: false, color: '#5f9ea0', text: "석!" },
+                  // { color: 'transparent' },
+                  // { startingDay: false, endingDay: false, color: '#f0e68c' },
+                ]
+              },
+              '2019-07-13': {
+                periods: [
+                  { startingDay: false, endingDay: true, color: '#5f9ea0', text: "훈!" },
+                  // { color: 'transparent' },
+                  // { startingDay: false, endingDay: false, color: '#f0e68c' },
+                ]
+              },
+            }}
+          markingType={'multi-period'}
             />
           </Animated.View>
           {knob}

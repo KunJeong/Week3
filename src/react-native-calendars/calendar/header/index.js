@@ -37,15 +37,8 @@ class CalendarHeader extends Component {
     this.onPressLeft = this.onPressLeft.bind(this);
     this.onPressRight = this.onPressRight.bind(this);
     this.state = {
-      thisMonth: Date()[4] + Date()[5] + Date()[6],
-      thisYear: Date()[11] + Date()[12] + Date()[13] + Date()[14],
-      currentMonth: this.props.month.toString(this.props.monthFormat)[0] +
-                  this.props.month.toString(this.props.monthFormat)[1] +
-                  this.props.month.toString(this.props.monthFormat)[2],
-      currentYear: this.props.month.toString(this.props.monthFormat)[this.props.month.toString(this.props.monthFormat).length-4] +
-                  this.props.month.toString(this.props.monthFormat)[this.props.month.toString(this.props.monthFormat).length-3] +
-                  this.props.month.toString(this.props.monthFormat)[this.props.month.toString(this.props.monthFormat).length-2] +
-                  this.props.month.toString(this.props.monthFormat)[this.props.month.toString(this.props.monthFormat).length-1]
+      today: XDate().getMonth() + XDate().getFullYear()* 12,
+      current: this.props.month.getMonth() + this.props.month.getFullYear()* 12
     }
   }
 
@@ -81,13 +74,17 @@ class CalendarHeader extends Component {
   onPressRight() {
     const {onPressArrowRight} = this.props;
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth, this.props.month);
+      return onPressArrowRight(this.addMonth, XDate().addMonths(1));
     }
     return this.addMonth();
   }
 
   _onPressButton() {
-    
+    const {onPressArrowLeft} = this.props;
+    if (typeof onPressArrowLeft === 'function') {
+      return onPressArrowLeft(this.substractMonth, XDate().addMonths(1));
+    }
+    return this.substractMonth();
   }
 
   render() {
@@ -146,9 +143,14 @@ class CalendarHeader extends Component {
             {indicator}
           </View>
           {/* {rightArrow} */}
-          <Button onPress={this._onPressButton} title = "HI!"/>
+          <TouchableOpacity onPress={this._onPressButton.bind(this)} title = "HI!">
+            <Image
+              style={{height: 50, width: 50}}
+              source={{
+                uri: "https://image.flaticon.com/icons/svg/212/212804.png"
+              }}/>
+          </TouchableOpacity>
         </View>
-        <Text>{this.state.currentMonth}</Text>
         {
           !this.props.hideDayNames &&
           <View style={this.style.week}>
