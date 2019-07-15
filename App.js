@@ -1,216 +1,106 @@
-import {Calendar, CalendarList, Agenda} from './src/react-native-calendars';
-import FAB from './src/FAB'
+
 import React, { Component } from 'react';
-// import {LocaleConfig} from 'react-native-calendars';
 import {
-	AppRegistry,
-	StyleSheet,
-	Text,
-	View,
-	TextInput,
-	Button,
-	TouchableOpacity,
-	Alert
+  Text,
+  View,
+  StyleSheet
 } from 'react-native';
-// import { Button } from 'react-native-elements';
+import {Agenda} from './src/react-native-calendars';
 
+export default class AgendaScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: {}
+    };
+  }
 
-// LocaleConfig.locales['fr'] = {
-//   monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-//   monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
-//   dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-//   dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
-//   today: 'Aujourd\'hui'
-// };
-
-// LocaleConfig.defaultLocale = 'fr';
-
-// class dotdate extends Component {
-//   render() {
-//     return (
-//       <View style={{alignItems: 'center'}}>
-//         <Text>Hello {this.props.name}!</Text>
-//       </View>
-//     );
-//   }
-// }
-
-class CustomText extends Component {
   render() {
     return (
-      <Text style={{backgroundColor: "blue"}}>{this.props.text}</Text>
+      <Agenda
+        items={this.state.items}
+        loadItemsForMonth={this.loadItems.bind(this)}
+        renderItem={this.renderItem.bind(this)}
+        renderEmptyDate={this.renderEmptyDate.bind(this)}
+        rowHasChanged={this.rowHasChanged.bind(this)}
+        markingType={'period'}
+        markedDates={{
+           '2019-05-08': {textColor: '#666'},
+           '2019-05-09': {textColor: '#666'},
+           '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+           '2017-05-21': {startingDay: true, color: 'blue'},
+           '2017-05-22': {endingDay: true, color: 'gray'},
+           '2017-05-24': {startingDay: true, color: 'gray'},
+           '2017-05-25': {color: 'gray'},
+           '2017-05-26': {endingDay: true, color: 'gray'}}}
+         monthFormat={'yyyy'}
+         // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+      />
     );
+  }
+
+  loadItems(day) {
+    setTimeout(() => {
+      for (let i = -15; i < 85; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        if (!this.state.items[strTime]) {
+          this.state.items[strTime] = [];
+          const numItems = Math.floor(Math.random() * 5);
+          for (let j = 0; j < numItems; j++) {
+            this.state.items[strTime].push({
+              name: 'Item for ' + strTime,
+              height: Math.max(50, Math.floor(Math.random() * 150))
+            });
+          }
+        }
+      }
+      //console.log(this.state.items);
+      const newItems = {};
+      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+      this.setState({
+        items: newItems
+      });
+    }, 1000);
+    // console.log(`Load Items for ${day.year}-${day.month}`);
+  }
+
+  renderItem(item) {
+    return (
+      <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+    );
+  }
+
+
+  renderEmptyDate() {
+    return (
+      <View style={styles.emptyDate}><Text>This is empty date!</Text></View>
+    );
+  }
+
+  rowHasChanged(r1, r2) {
+    return r1.name !== r2.name;
+  }
+
+  timeToString(time) {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
   }
 }
 
-// class CustomDay extends Day {
-// 	constructor(props){
-// 		super(props);
-// 	};
-// 	dayComponent={({date, state}) => {
-//    		return (
-//    			<TouchableOpacity style={styles.button}
-// 				onPress={this.onPress}
-// 			>
-// 	   		<View style={styles.day}>
-// 				<Text>{date.day}</Text>
-// 				<Text>{this.state.markedText}</Text>
-// 			</View>
-// 		   	</TouchableOpacity>);
-//    	}}
-// }
-
-// class Date extends Component {
-// 	constructor (props) {
-// 	 	super(props)
-// 	 	this.state = {
-// 		selectedDate: 'HI'
-// 	 	}
-// 	 	this.updateDate = this.updateDate.bind(this)
-// 	}
-
-// 	updateDate (input) {
-//   		this.setState({selectedDate: input})
-// 	}
-
-// 	render() {
-// 		return (
-// 	      <View style={styles.container}>
-
-// 	        <Button
-//           		color="green"
-//           		title={this.state.selectedDate}
-//           		onPress={(e) => this.updateDate("BYE!!")}
-//           	/>
-//           	<Text>{this.state.selectedDate}</Text>
-// 	      </View>
-// 		);
-// 	}
-// }
-
-// const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
-// const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
-// const workout = {key:'workout', color: 'green'};
-
-export default class App extends Component {
-	constructor (props) {
-	 	super(props)
-	 	this.state = {
-	 		multi_period_Text: "HI!",
-	 		// markedColor: "",
-	 		// markedDates:13,
-			D: 0,
-			month:"",
-	 	}
-	 	this.updateDate = this.updateDate.bind(this)
-	}
-
-	onPress = () => {
-    	this.setState({
-    		D: this.state.D + 1
-   		})
-	}
-
-	updateDate (input) {
-  		this.setState({D: input})
-	}
-
-	// daay(props) {
-	// 	if(props.day === this.state.markedDates){
-	// 		return (<CustomText text= {this.state.markedText !== 0 ? this.state.markedText: null}/>)
-	// 	}
-	// }
-
-	// static getDerivedStateFromProps(nextProps, prevState) {
- //    if (prevState.markedText !== nextProps.markedText) {
- //      return {markedText: nextProps.markedText}
- //    }
-
- //    return null;
- //  }
-
-
- 	selectedDay(props) {
- 		Alert.alert(JSON.stringify(props))
- 		// <Text style={{marginTop: 300}}> { this.state.markedText !== "" ? this.state.markedText: "BYE!"}</Text>
-	}
-	onIndexChange(){
-		return(
-			<View style = {styles.absolute}>
-			</View>
-		)
-	}
-
-	render() {
-		// const currentMonth = 
-		// const currentYear = 
-		// const { selectedDate } = this.state
-		return (
-			<View style={styles.box}>
-				<View style={styles.container}>
-					<CalendarList style={styles.calendar}
-						onDayPress={(day) => this.selectedDay(day)}
-						horizontal={true}
-						pagingEnabled={true}
-						calendarHeight={500}
-						markedDates={{
-							'2019-07-10': {
-							periods: [
-								{ startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
-								{ startingDay: true, endingDay: true, color: '#eeeeee' },
-								// { startingDay: true, endingDay: false, color: '#f0e68c' },
-							]
-							},
-							'2019-07-11': {
-							periods: [
-								{ startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
-								{ startingDay: true, endingDay: true, color: '#ffa500' },
-								// { startingDay: true, endingDay: false, color: '#f0e68c' },
-							]
-							},
-							'2019-07-12': {
-							periods: [
-								{ startingDay: false, endingDay: false, color: '#5f9ea0', text: "석!" },
-								// { color: 'transparent' },
-								// { startingDay: false, endingDay: false, color: '#f0e68c' },
-							]
-							},
-							'2019-07-13': {
-							periods: [
-								{ startingDay: false, endingDay: true, color: '#5f9ea0', text: "훈!" },
-								// { color: 'transparent' },
-								// { startingDay: false, endingDay: false, color: '#f0e68c' },
-							]
-							},
-						}}
-						markingType={'multi-period'}
-					/>
-					<Text>{this.state.month}</Text>
-					
-				</View>
-				{this.onIndexChange()}
-				<FAB 
-				/>
-			</View>
-		);
-	}
-}
-
 const styles = StyleSheet.create({
-	box: {
-		height: '100%',
-		// paddingLeft: 5,
-		// paddingRight: 5,
-	  },
-	red: {
-		color: 'red',
-	},
-	absolute: {
-		position: 'absolute',
-		left:15,
-		top:100,
-		width: 47.2,
-		height: 80, 
-		backgroundColor: '#eeeeee'
-	}
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17
+  },
+  emptyDate: {
+    height: 15,
+    flex:1,
+    paddingTop: 30
+  }
 });
