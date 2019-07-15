@@ -209,7 +209,7 @@ class CalendarList extends Component {
         scrollToMonth={this.scrollToMonth.bind(this)}
         item={item} 
         calendarHeight={this.props.calendarHeight} 
-        calendarWidth={this.props.horizontal ? this.props.calendarWidth : undefined} 
+        calendarWidth={this.props.horizontal ? 4000 : undefined} 
         {...this.props} 
         style={this.props.calendarStyle}
       />
