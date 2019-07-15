@@ -53,6 +53,10 @@ export default class AgendaView extends Component {
     renderEmptyDay: PropTypes.func,
     /** specify what should be rendered instead of ActivityIndicator */
     renderEmptyData: PropTypes.func,
+    /** ADDED: enables horizontal scroll*/
+    horizontal: PropTypes.bool,
+    /** ADDED: gets calendar height */
+    calendarHeight: PropTypes.number,
     /** specify your item comparison function for increased performance */
     rowHasChanged: PropTypes.func,
     /** Max amount of months allowed to scroll to the past. Default = 50 */
@@ -243,7 +247,12 @@ export default class AgendaView extends Component {
     // in CalendarList listView, but that might impact performance when scrolling
     // month list in expanded CalendarList.
     // Further info https://github.com/facebook/react-native/issues/1831
-    this.calendar.scrollToDay(this.state.selectedDay, 0, true);
+    if(this.props.horizontal) {
+      this.calendar.scrollToDay(this.state.selectedDay, 0, true);
+    }
+    else {
+      this.calendar.scrollToDay(this.state.selectedDay, this.calendarOffset() + 1, true);
+    }
   }
 
   _chooseDayFromCalendar(d) {
@@ -270,7 +279,12 @@ export default class AgendaView extends Component {
     }
 
     this.setScrollPadPosition(this.initialScrollPadPosition(), true);
-    this.calendar.scrollToDay(day, 0, true);
+    if(this.props.horizontal) {
+      this.calendar.scrollToDay(day, 0, true);
+    }
+    else {
+      this.calendar.scrollToDay(day, this.calendarOffset(), true);
+    }
     
     if (this.props.loadItemsForMonth) {
       this.props.loadItemsForMonth(xdateToData(day));
@@ -306,8 +320,12 @@ export default class AgendaView extends Component {
   onDayChange(day) {
     const newDate = parseDate(day);
     const withAnimation = dateutils.sameMonth(newDate, this.state.selectedDay);
-    
-    this.calendar.scrollToDay(day, 0, withAnimation);
+    if(this.props.horizontal) {
+      this.calendar.scrollToDay(day, 0, withAnimation);
+    }
+    else {
+      this.calendar.scrollToDay(day, this.calendarOffset(), withAnimation);
+    }
     this.setState({
       selectedDay: parseDate(day)
     });
@@ -405,14 +423,39 @@ export default class AgendaView extends Component {
           <Animated.View style={{flex:1, transform: [{translateY: contentTranslate}]}}>
             <CalendarList
               month={this.state.currentMonth}
+              onLayout={() => {
+                if(this.props.horizontal) {
+                  this.calendar.scrollToDay(this.state.selectedDay.clone(), 0, false);
+                }
+                else {
+                  this.calendar.scrollToDay(this.state.selectedDay.clone(), this.calendarOffset(), false);
+                }
+              }}
+              calendarWidth={this.viewWidth}
+              calendarHeight={this.props.calendarHeight}
+              hideArrows={false}
+              theme={this.props.theme}
+              onVisibleMonthsChange={this.onVisibleMonthsChange.bind(this)}
               ref={(c) => this.calendar = c}
-              onDayPress={this._chooseDayFromCalendar.bind(this)}
-              disabledByDefault={this.props.disabledByDefault}
-              horizontal={true}
-              pagingEnabled={true}
-              calendarHeight={650}
+              minDate={this.props.minDate}
+              maxDate={this.props.maxDate}
+              current={this.currentMonth}
               markedDates={this.generateMarkings()}
-              markingType={'multi-period'}
+              markingType={this.props.markingType}
+              removeClippedSubviews={this.props.removeClippedSubviews}
+              onDayPress={this._chooseDayFromCalendar.bind(this)}
+              horizontal={this.props.horizontal}
+              pagingEnabled={true}
+              scrollingEnabled={this.state.calendarScrollable}
+              hideExtraDays={this.state.calendarScrollable}
+              firstDay={this.props.firstDay}
+              // monthFormat={this.props.monthFormat}
+              pastScrollRange={this.props.pastScrollRange}
+              futureScrollRange={this.props.futureScrollRange}
+              dayComponent={this.props.dayComponent}
+              disabledByDefault={this.props.disabledByDefault}
+              displayLoadingIndicator={this.props.displayLoadingIndicator}
+              showWeekNumbers={this.props.showWeekNumbers}
             />
           </Animated.View>
           {knob}

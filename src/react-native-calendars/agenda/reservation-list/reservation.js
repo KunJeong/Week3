@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {xdateToData} from '../../interface';
 import XDate from 'xdate';
 import dateutils from '../../dateutils';
@@ -35,7 +35,7 @@ class ReservationListItem extends Component {
 
   renderDate(date, item) {
     if (this.props.renderDay) {
-      return this.props.renderDay(date ? xdateToData(date) : undefined, item);
+      return this.props.renderDay(date ? date : undefined, item);
     }
     const today = dateutils.sameDate(date, XDate()) ? this.styles.today : undefined;
     if (date) {
@@ -59,6 +59,7 @@ class ReservationListItem extends Component {
       const firstItem = date ? true : false;
       content = this.props.renderItem(reservation, firstItem);
     } else {
+      // Alert.alert("yes");
       content = this.props.renderEmptyDate(date);
     }
     return (
