@@ -133,8 +133,13 @@ export default class App extends Component {
  	selectedDay(props) {
  		Alert.alert(JSON.stringify(props))
  		// <Text style={{marginTop: 300}}> { this.state.markedText !== "" ? this.state.markedText: "BYE!"}</Text>
- 	}
-
+	}
+	onIndexChange(){
+		return(
+			<View style = {styles.absolute}>
+			</View>
+		)
+	}
 
 	render() {
 		// const currentMonth = 
@@ -142,8 +147,8 @@ export default class App extends Component {
 		// const { selectedDate } = this.state
 		return (
 			<View style={styles.box}>
-				{/* <View style={styles.container}>
-					{/* <CalendarList style={styles.calendar}
+				<View style={styles.container}>
+					<CalendarList style={styles.calendar}
 						onDayPress={(day) => this.selectedDay(day)}
 						horizontal={true}
 						pagingEnabled={true}
@@ -180,13 +185,12 @@ export default class App extends Component {
 						}}
 						markingType={'multi-period'}
 					/>
-					{/*<TextInput style={{height: 40,borderColor: 'gray', borderWidth: 1}}
-						onChangeText={(text) => this.setState({multi_period_Text: text})}
-					/>*
 					<Text>{this.state.month}</Text>
 					
-				</View> */}
-				<FAB/>
+				</View>
+				{this.onIndexChange()}
+				<FAB 
+				/>
 			</View>
 		);
 	}
@@ -201,4 +205,12 @@ const styles = StyleSheet.create({
 	red: {
 		color: 'red',
 	},
+	absolute: {
+		position: 'absolute',
+		left:15,
+		top:100,
+		width: 47.2,
+		height: 80, 
+		backgroundColor: '#eeeeee'
+	}
 });

@@ -12,11 +12,11 @@ export default class FAB extends TouchableWithoutFeedback{
         // border: new Animated.Value(30),
 					pan: new Animated.ValueXY(),
 					width : 47.2,
-			leftOffset : 15,
-			height : 80,
-      topOffset : 99,
-      cellToRight: 0,
-      cellToBottom: 0
+					leftOffset : 15,
+					height : 80,
+					topOffset : 99,
+					cellToRight: 0,
+					cellToBottom: 0
         }
     }
     componentWillMount() {
