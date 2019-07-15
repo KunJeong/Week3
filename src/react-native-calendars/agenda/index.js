@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Dimensions, Animated, ViewPropTypes} from 'react-native';
+import {Text, View, Dimensions, Animated, ViewPropTypes, Alert} from 'react-native';
 import PropTypes from 'prop-types';
 import XDate from 'xdate';
 
@@ -73,6 +73,8 @@ export default class AgendaView extends Component {
     markingType: PropTypes.string,/* 
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
+
+    onKnobPress: PropTypes.func,
     /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
     monthFormat: PropTypes.string,
     /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
@@ -147,7 +149,7 @@ export default class AgendaView extends Component {
   onTouchStart() {
     this.headerState = 'touched';
     if (this.knob) {
-      this.knob.setNativeProps({style: {opacity: 0.5}});
+      this.knob.setNativeProps({style: {opacity: 0.5}})
     }
   }
 
@@ -155,12 +157,11 @@ export default class AgendaView extends Component {
     if (this.knob) {
       this.knob.setNativeProps({style: {opacity: 1}});
     }
-
     if (this.headerState === 'touched') {
+      this.props.onKnobPress("true")
       this.setScrollPadPosition(0, true);
       this.enableCalendarScrolling();
     }
-
     this.headerState = 'idle';
   }
 
@@ -246,6 +247,7 @@ export default class AgendaView extends Component {
   }
 
   _chooseDayFromCalendar(d) {
+    this.props.onKnobPress("false")
     this.chooseDay(d, !this.state.calendarScrollable);
   }
 
@@ -328,7 +330,7 @@ export default class AgendaView extends Component {
     }
 
     const key = this.state.selectedDay.toString('yyyy-MM-dd');
-    return {...markings, [key]: {...(markings[key] || {}), ...{selected: true}}};
+    return {...markings, [key]: {...(markings[key] || {}), ...{selected: false}}};
   }
 
   render() {
@@ -386,7 +388,7 @@ export default class AgendaView extends Component {
     let knob = (<View style={this.styles.knobContainer}/>);
 
     if (!this.props.hideKnob) {
-      const knobView = this.props.renderKnob ? this.props.renderKnob() : (<View style={this.styles.knob}/>);
+            const knobView = this.props.renderKnob ? this.props.renderKnob() : (<View style={this.styles.knob}/>);
       knob = this.state.calendarScrollable ? null : (
         <View style={this.styles.knobContainer}>
           <View ref={(c) => this.knob = c}>{knobView}</View>
@@ -409,37 +411,8 @@ export default class AgendaView extends Component {
               horizontal={true}
               pagingEnabled={true}
               calendarHeight={650}
-              markedDates={{
-              '2019-07-10': {
-                periods: [
-                  { startingDay: true, endingDay: true, color: '#5f9ea0', text: this.state.multi_period_Text },
-                  // { startingDay: false, endingDay: true, color: '#ffa500' },
-                  // { startingDay: true, endingDay: false, color: '#f0e68c' },
-                ]
-              },
-              '2019-07-11': {
-                periods: [
-                  { startingDay: true, endingDay: false, color: '#5f9ea0', text: "정!" },
-                  // { startingDay: false, endingDay: true, color: '#ffa500' },
-                  // { startingDay: true, endingDay: false, color: '#f0e68c' },
-                ]
-              },
-              '2019-07-12': {
-                periods: [
-                  { startingDay: false, endingDay: false, color: '#5f9ea0', text: "석!" },
-                  // { color: 'transparent' },
-                  // { startingDay: false, endingDay: false, color: '#f0e68c' },
-                ]
-              },
-              '2019-07-13': {
-                periods: [
-                  { startingDay: false, endingDay: true, color: '#5f9ea0', text: "훈!" },
-                  // { color: 'transparent' },
-                  // { startingDay: false, endingDay: false, color: '#f0e68c' },
-                ]
-              },
-            }}
-          markingType={'multi-period'}
+              markedDates={this.generateMarkings()}
+              markingType={'multi-period'}
             />
           </Animated.View>
           {knob}
