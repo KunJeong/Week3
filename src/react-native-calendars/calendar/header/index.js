@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styleConstructor from './style';
 import {weekDayNames} from '../../dateutils';
 import {CHANGE_MONTH_LEFT_ARROW, CHANGE_MONTH_RIGHT_ARROW} from '../../testIDs';
+import {Icon} from 'react-native-elements';
 
 
 class CalendarHeader extends Component {
@@ -74,7 +75,7 @@ class CalendarHeader extends Component {
   onPressRight() {
     const {onPressArrowRight} = this.props;
     if (typeof onPressArrowRight === 'function') {
-      return onPressArrowRight(this.addMonth, XDate().addMonths(1));
+      return onPressArrowRight(this.addMonth, this.props.month);
     }
     return this.addMonth();
   }
@@ -103,9 +104,10 @@ class CalendarHeader extends Component {
         >
           {this.props.renderArrow
             ? this.props.renderArrow('left')
-            : <Image
-                source={require('../img/previous.png')}
-                style={this.style.arrowImage}
+            : <Icon
+                name='chevron-left'
+                // type='antdesign'
+                color='#778899'
               />}
         </TouchableOpacity>
       );
@@ -113,14 +115,15 @@ class CalendarHeader extends Component {
         <TouchableOpacity
           onPress={this.onPressRight}
           style={this.style.arrow}
-          hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+          hitSlop={{left: 0, right: 20, top: 20, bottom: 20}}
           testID={testID ? `${testID}-${CHANGE_MONTH_RIGHT_ARROW}`: CHANGE_MONTH_RIGHT_ARROW}
         >
           {this.props.renderArrow
             ? this.props.renderArrow('right')
-            : <Image
-                source={require('../img/next.png')}
-                style={this.style.arrowImage}
+            : <Icon
+                name='chevron-right'
+                // type='antdesign'
+                color='#778899'
               />}
         </TouchableOpacity>
       );
@@ -134,22 +137,27 @@ class CalendarHeader extends Component {
     return (
       <View style={this.props.style}>
         <View style={this.style.header}>
-          {/* {leftArrow} */}
-          <Button title = "HI!"/>
+          {leftArrow}
           <View style={{ flexDirection: 'row' }}>
             <Text allowFontScaling={false} style={this.style.monthText} accessibilityTraits='header'>
               {this.props.month.toString(this.props.monthFormat)}
             </Text>
             {indicator}
           </View>
-          {/* {rightArrow} */}
-          <TouchableOpacity onPress={this._onPressButton.bind(this)} title = "HI!">
-            <Image
-              style={{height: 50, width: 50}}
-              source={{
-                uri: "https://image.flaticon.com/icons/svg/212/212804.png"
-              }}/>
+          
+          <TouchableOpacity
+            onPress={this._onPressButton.bind(this)}
+            hitSlop={{left: 20, right: 20, top: 20, bottom: 20}}
+            style={{
+              position: 'absolute',
+              right: 60
+            }}>
+          <Icon
+            name='today'
+            color='#778899'
+            />
           </TouchableOpacity>
+          {rightArrow}
         </View>
         {
           !this.props.hideDayNames &&

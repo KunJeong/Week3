@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {
   FlatList,
   ActivityIndicator,
-  View
+  View,
+  Alert
 } from 'react-native';
 import Reservation from './reservation';
 import PropTypes from 'prop-types';
@@ -129,8 +130,9 @@ class ReactComp extends Component {
   getReservationsForDay(iterator, props) {
     const day = iterator.clone();
     const res = props.reservations[day.toString('yyyy-MM-dd')];
-    if (res && res.length) {
-      return res.map((reservation, i) => {
+
+    if (res && res.periods.length) {
+      return res.periods.map((reservation, i) => {
         return {
           reservation,
           date: i ? false : day,
