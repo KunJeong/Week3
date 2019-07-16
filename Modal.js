@@ -4,31 +4,12 @@ import {
   Text,
   View,
   StyleSheet,
-  Alert,
-  Button,
   TextInput,
   TouchableOpacity,
   DatePickerAndroid,
   Modal,
-  Image,
-  TouchableWithoutFeedback,
-  Json
 } from 'react-native';
-import { TriangleColorPicker, ColorPicker } from 'react-native-color-picker'
-import {Agenda} from './src/react-native-calendars';
-
-
-class CustomText extends Component {
-  render() {
-    return (
-      <TriangleColorPicker
-        onColorSelected={color => alert(`Color selected: ${color}`)}
-        style={{flex: 1}}
-      />
-    )
-  }
-}
-
+import { ColorPicker } from 'react-native-color-picker'
 
 export default class AgendaScreen extends Component {
   constructor(props) {

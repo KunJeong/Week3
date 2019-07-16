@@ -77,8 +77,6 @@ export default class AgendaView extends Component {
     markingType: PropTypes.string,/* 
     /** Hide knob button. Default = false */
     hideKnob: PropTypes.bool,
-
-    onKnobPress: PropTypes.func,
     /** Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting */
     monthFormat: PropTypes.string,
     /** A RefreshControl component, used to provide pull-to-refresh functionality for the ScrollView. */
@@ -162,7 +160,6 @@ export default class AgendaView extends Component {
       this.knob.setNativeProps({style: {opacity: 1}});
     }
     if (this.headerState === 'touched') {
-      this.props.onKnobPress("true")
       this.setScrollPadPosition(0, true);
       this.enableCalendarScrolling();
     }
@@ -256,7 +253,6 @@ export default class AgendaView extends Component {
   }
 
   _chooseDayFromCalendar(d) {
-    this.props.onKnobPress("false")
     this.chooseDay(d, !this.state.calendarScrollable);
   }
 
@@ -348,7 +344,7 @@ export default class AgendaView extends Component {
     }
 
     const key = this.state.selectedDay.toString('yyyy-MM-dd');
-    return {...markings, [key]: {...(markings[key] || {}), ...{selected: false}}};
+    return {...markings, [key]: {...(markings[key] || {}), ...{selected: true}}};
   }
 
   render() {

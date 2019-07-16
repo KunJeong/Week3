@@ -7,9 +7,6 @@ export default class FAB extends TouchableWithoutFeedback{
         super(props);
         this.state = {
           scale: new Animated.Value(1),
-        // height: new Animated.Value(60),
-        // width: new Animated.Value(60),
-        // border: new Animated.Value(30),
 					pan: new Animated.ValueXY(),
 					width : 47.2,
 					leftOffset : 15,
@@ -48,8 +45,55 @@ export default class FAB extends TouchableWithoutFeedback{
 							)
 						,
             onPanResponderRelease: (e, gesture) => {
-               
-                if(!this.props.isDropArea(gesture)){
+              if(this.props.isDropArea(gesture)){
+                this.setState({icon: false})
+                setTimeout(()=>{Animated.parallel([
+                  Animated.spring(
+                      this.state.pan,
+                      {
+                          toValue:{x:-130,y:-255},
+                          bounciness: 8,
+                          speed: 2,
+                          useNativeDriver: true
+                      }
+                  ).start(),
+                  Animated.spring(
+                      this.state.scale,
+                      {
+                          toValue: 15,
+                          bounciness: 15,
+                          speed: 2,
+                          useNativeDriver: true
+                      }
+                  ).start(),
+              ])}, 0);
+                
+                this.props.onButtonDrop();
+                
+                setTimeout(()=>{
+                  this.setState({icon: true})
+                  Animated.parallel([
+                    Animated.spring(
+                        this.state.pan,
+                        {
+                            toValue:{x:0,y:0},
+                            bounciness: 8,
+                            speed: 15,
+                            useNativeDriver: true
+                        }
+                    ).start(),
+                    Animated.spring(
+                        this.state.scale,
+                        {
+                            toValue: 1,
+                            bounciness: 15,
+                            speed: 40,
+                            useNativeDriver: true
+                        }
+                    ).start(),
+                  ])}, 0);
+              }
+              else{
                   this.setState({icon: true})
                   Animated.parallel([
                     Animated.spring(
@@ -72,30 +116,6 @@ export default class FAB extends TouchableWithoutFeedback{
                     ).start(),
                   ])
                 }
-                else {
-                  this.setState({icon: false})
-                    Animated.parallel([
-                        Animated.spring(
-                            this.state.pan,
-                            {
-                                toValue:{x:-130,y:-255},
-                                bounciness: 8,
-                                speed: 2,
-                                useNativeDriver: true
-                            }
-                        ).start(),
-                        Animated.spring(
-                            this.state.scale,
-                            {
-                                toValue: 15,
-                                bounciness: 15,
-                                speed: 2,
-                                useNativeDriver: true
-                            }
-                        ).start(),
-                    ])
-                }
-                
             }
         })
     }
